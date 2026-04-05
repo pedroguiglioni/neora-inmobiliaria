@@ -785,11 +785,8 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"
-    />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
   </head>
   <body>
     <header class="detalle-header">
@@ -1404,35 +1401,24 @@
         if (propiedad.latitud && propiedad.longitud) {
           setTimeout(() => {
             const mapaEl = document.getElementById("mapa-leaflet");
-            if (!mapaEl) {
-              console.log("NO ENCONTRO EL DIV");
-              return;
-            }
-            console.log("ENCONTRO EL DIV", mapaEl);
-            const mapa = L.map("mapa-leaflet").setView(
-              [parseFloat(propiedad.latitud), parseFloat(propiedad.longitud)],
-              16,
-            );
-            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-              attribution: "© OpenStreetMap",
-            }).addTo(mapa);
-            const color = propiedad.tipo === "alquiler" ? "#1f5ea8" : "#c11b36";
-            const icono = L.divIcon({
-              html: `<div style="width:20px;height:20px;background:${color};border-radius:50%;border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.3);"></div>`,
-              iconSize: [20, 20],
-              iconAnchor: [10, 10],
-              className: "",
+            if (!mapaEl) return;
+            mapboxgl.accessToken = 'pk.eyJ1IjoicGVkcm9ndWlnbGlvbmkiLCJhIjoiY21uaHBtM3RrMDU1aDJxb29wb2p3czBsciJ9.zItpsW0uoqSmvtTfQY_2-g';
+            const mapa = new mapboxgl.Map({
+              container: 'mapa-leaflet',
+              style: 'mapbox://styles/mapbox/streets-v12',
+              center: [parseFloat(propiedad.longitud), parseFloat(propiedad.latitud)],
+              zoom: 15
             });
-            L.marker(
-              [parseFloat(propiedad.latitud), parseFloat(propiedad.longitud)],
-              { icon: icono },
-            )
-              .addTo(mapa)
-              .bindPopup(
-                `<b>${propiedad.titulo || ""}</b><br>${propiedad.ciudad || ""}`,
-              )
-              .openPopup();
+            const color = propiedad.tipo === 'alquiler' ? '#1f5ea8' : '#c11b36';
+            const el = document.createElement('div');
+            el.style.cssText = `width:22px;height:22px;background:${color};border-radius:50%;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,0.4);cursor:pointer;`;
+            new mapboxgl.Marker({ element: el })
+              .setLngLat([parseFloat(propiedad.longitud), parseFloat(propiedad.latitud)])
+              .setPopup(new mapboxgl.Popup().setHTML(`<b>${propiedad.titulo || ''}</b><br>${propiedad.ciudad || ''}`))
+              .addTo(mapa);
+            mapa.addControl(new mapboxgl.NavigationControl());
           }, 300);
+        }
         }
 
         if (window.innerWidth <= 700) {
