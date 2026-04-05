@@ -282,7 +282,27 @@
             ><input type="checkbox" id="apto_credito" /> Apto crédito</label
           >
           <label><input type="checkbox" id="destacado" /> Destacado</label>
-          <label><input type="checkbox" id="permuta" /> Acepta permuta</label>
+         <label><input type="checkbox" id="permuta" /> Acepta permuta</label>
+        </div>
+
+        <div class="checks">
+          <label><input type="checkbox" id="garage" /> Garage</label>
+          <label><input type="checkbox" id="quincho" /> Quincho</label>
+          <label><input type="checkbox" id="piscina" /> Piscina</label>
+          <label><input type="checkbox" id="jardin" /> Jardín</label>
+          <label><input type="checkbox" id="terraza" /> Terraza</label>
+          <label><input type="checkbox" id="balcon" /> Balcón</label>
+          <label><input type="checkbox" id="lavadero" /> Lavadero</label>
+          <label><input type="checkbox" id="bodega" /> Bodega</label>
+          <label><input type="checkbox" id="seguridad_24hs" /> Seguridad 24hs</label>
+          <label><input type="checkbox" id="portero" /> Portero</label>
+          <label><input type="checkbox" id="barrio_cerrado" /> Barrio cerrado</label>
+          <label><input type="checkbox" id="amoblado" /> Amoblado</label>
+          <label><input type="checkbox" id="apto_mascotas" /> Apto mascotas</label>
+          <label><input type="checkbox" id="calefaccion" /> Calefacción</label>
+          <label><input type="checkbox" id="aire_acondicionado" /> Aire acondicionado</label>
+          <label><input type="checkbox" id="deposito" /> Depósito</label>
+          <label><input type="checkbox" id="estacionamiento" /> Estacionamiento</label>
         </div>
 
         <div class="acciones">
@@ -569,7 +589,24 @@
           financia: document.getElementById("financia").checked,
           apto_credito: document.getElementById("apto_credito").checked,
           destacado: document.getElementById("destacado").checked,
-          permuta: document.getElementById("permuta").checked,
+         permuta: document.getElementById("permuta").checked,
+          garage: document.getElementById("garage").checked,
+          quincho: document.getElementById("quincho").checked,
+          piscina: document.getElementById("piscina").checked,
+          jardin: document.getElementById("jardin").checked,
+          terraza: document.getElementById("terraza").checked,
+          balcon: document.getElementById("balcon").checked,
+          lavadero: document.getElementById("lavadero").checked,
+          bodega: document.getElementById("bodega").checked,
+          seguridad_24hs: document.getElementById("seguridad_24hs").checked,
+          portero: document.getElementById("portero").checked,
+          barrio_cerrado: document.getElementById("barrio_cerrado").checked,
+          amoblado: document.getElementById("amoblado").checked,
+          apto_mascotas: document.getElementById("apto_mascotas").checked,
+          calefaccion: document.getElementById("calefaccion").checked,
+          aire_acondicionado: document.getElementById("aire_acondicionado").checked,
+          deposito: document.getElementById("deposito").checked,
+          estacionamiento: document.getElementById("estacionamiento").checked,
           categoria: document.getElementById("categoria").value || null,
           latitud: document.getElementById("latitud").value
             ? parseFloat(document.getElementById("latitud").value)
@@ -722,7 +759,24 @@
         document.getElementById("apto_credito").checked =
           data.apto_credito || false;
         document.getElementById("destacado").checked = data.destacado || false;
-        document.getElementById("permuta").checked = data.permuta || false;
+       document.getElementById("permuta").checked = data.permuta || false;
+        document.getElementById("garage").checked = data.garage || false;
+        document.getElementById("quincho").checked = data.quincho || false;
+        document.getElementById("piscina").checked = data.piscina || false;
+        document.getElementById("jardin").checked = data.jardin || false;
+        document.getElementById("terraza").checked = data.terraza || false;
+        document.getElementById("balcon").checked = data.balcon || false;
+        document.getElementById("lavadero").checked = data.lavadero || false;
+        document.getElementById("bodega").checked = data.bodega || false;
+        document.getElementById("seguridad_24hs").checked = data.seguridad_24hs || false;
+        document.getElementById("portero").checked = data.portero || false;
+        document.getElementById("barrio_cerrado").checked = data.barrio_cerrado || false;
+        document.getElementById("amoblado").checked = data.amoblado || false;
+        document.getElementById("apto_mascotas").checked = data.apto_mascotas || false;
+        document.getElementById("calefaccion").checked = data.calefaccion || false;
+        document.getElementById("aire_acondicionado").checked = data.aire_acondicionado || false;
+        document.getElementById("deposito").checked = data.deposito || false;
+        document.getElementById("estacionamiento").checked = data.estacionamiento || false;
         document.getElementById("categoria").value = data.categoria || "";
         document.getElementById("latitud").value = data.latitud || "";
         document.getElementById("longitud").value = data.longitud || "";
