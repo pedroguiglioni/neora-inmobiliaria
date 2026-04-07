@@ -401,6 +401,41 @@
         color: #fff !important;
       }
 
+      .chip-categoria {
+        height: 30px;
+        padding: 0 12px;
+        border-radius: 6px;
+        border: 1px solid #e0e0e0;
+        background: #fff;
+        color: #555;
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+
+      .chip-categoria:hover {
+        border-color: #c11b36;
+        color: #c11b36;
+      }
+
+      .chip-categoria.activo {
+        background: #c11b36;
+        border-color: #c11b36;
+        color: #fff;
+        font-weight: 600;
+      }
+
+      .chip-ver-mas {
+        background: #f8f8f8;
+        color: #888;
+        font-style: italic;
+      }
+
+      .chip-extra.oculto {
+        display: none;
+      }
+
       .acciones-card {
         display: flex;
         flex-direction: column;
@@ -1932,6 +1967,28 @@
             <option value="emprendimiento">Emprendimientos</option>
           </select>
 
+         <select id="filtroCategoria">
+            <option value="">Categoría</option>
+            <option value="Casa">Casa</option>
+            <option value="Departamento">Departamento</option>
+            <option value="PH">PH</option>
+            <option value="Dúplex">Dúplex</option>
+            <option value="Monoambiente">Monoambiente</option>
+            <option value="Quinta">Quinta</option>
+            <option value="Lote/Terreno">Lote/Terreno</option>
+            <option value="Campo">Campo</option>
+            <option value="Chacra">Chacra</option>
+            <option value="Fracción">Fracción</option>
+            <option value="Oficina">Oficina</option>
+            <option value="Local">Local</option>
+            <option value="Consultorio">Consultorio</option>
+            <option value="Fondo de comercio">Fondo de comercio</option>
+            <option value="Cochera">Cochera</option>
+            <option value="Galpón/Depósito">Galpón/Depósito</option>
+            <option value="Edificio">Edificio</option>
+            <option value="Cabaña">Cabaña</option>
+          </select>
+
           <select id="filtroCiudad">
             <option value="">Ciudad</option>
             <option value="corrientes">Corrientes</option>
@@ -2043,6 +2100,32 @@
           <button type="button" class="filtro-rapido" onclick="filtroRapido('temporal', this)">Temporal</button>
           <button type="button" class="filtro-rapido" onclick="filtroRapido('emprendimiento', this)">Emprendimientos</button>
           <button type="button" class="filtro-rapido filtro-rapido-permuta" onclick="filtroRapidoPermuta(this)">🔄 Permutas</button>
+        </div>
+      </div>
+
+      <div class="filtros-categoria" style="margin-bottom:16px;padding-top:14px;border-top:1px solid #f0f0f0;">
+        <p style="margin:0 0 8px;font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px;font-weight:600;">Filtrar por categoría:</p>
+        <div class="filtros-categoria-chips" style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button type="button" class="chip-categoria activo" onclick="filtroCategoria('', this)">Todas</button>
+          <button type="button" class="chip-categoria" onclick="filtroCategoria('Casa', this)">Casa</button>
+          <button type="button" class="chip-categoria" onclick="filtroCategoria('Departamento', this)">Departamento</button>
+          <button type="button" class="chip-categoria" onclick="filtroCategoria('PH', this)">PH</button>
+          <button type="button" class="chip-categoria" onclick="filtroCategoria('Lote/Terreno', this)">Lote/Terreno</button>
+          <button type="button" class="chip-categoria" onclick="filtroCategoria('Quinta', this)">Quinta</button>
+          <button type="button" class="chip-categoria" onclick="filtroCategoria('Local', this)">Local</button>
+          <button type="button" class="chip-categoria" onclick="filtroCategoria('Oficina', this)">Oficina</button>
+          <button type="button" class="chip-categoria" onclick="filtroCategoria('Cochera', this)">Cochera</button>
+          <button type="button" class="chip-categoria chip-ver-mas" onclick="toggleVerMasCategorias(this)">+ Ver más</button>
+          <button type="button" class="chip-categoria chip-extra oculto" onclick="filtroCategoria('Dúplex', this)">Dúplex</button>
+          <button type="button" class="chip-categoria chip-extra oculto" onclick="filtroCategoria('Monoambiente', this)">Monoambiente</button>
+          <button type="button" class="chip-categoria chip-extra oculto" onclick="filtroCategoria('Campo', this)">Campo</button>
+          <button type="button" class="chip-categoria chip-extra oculto" onclick="filtroCategoria('Chacra', this)">Chacra</button>
+          <button type="button" class="chip-categoria chip-extra oculto" onclick="filtroCategoria('Fracción', this)">Fracción</button>
+          <button type="button" class="chip-categoria chip-extra oculto" onclick="filtroCategoria('Consultorio', this)">Consultorio</button>
+          <button type="button" class="chip-categoria chip-extra oculto" onclick="filtroCategoria('Fondo de comercio', this)">Fondo de comercio</button>
+          <button type="button" class="chip-categoria chip-extra oculto" onclick="filtroCategoria('Galpón/Depósito', this)">Galpón/Depósito</button>
+          <button type="button" class="chip-categoria chip-extra oculto" onclick="filtroCategoria('Edificio', this)">Edificio</button>
+          <button type="button" class="chip-categoria chip-extra oculto" onclick="filtroCategoria('Cabaña', this)">Cabaña</button>
         </div>
       </div>
 
@@ -2238,10 +2321,11 @@
         document.getElementById("propiedades").scrollIntoView({ behavior: "smooth" });
       }
 
-     function filtroRapido(tipo, btn) {
+    function filtroRapido(tipo, btn) {
         document.querySelectorAll(".filtro-rapido").forEach(b => b.classList.remove("activo"));
         btn.classList.add("activo");
         document.getElementById("filtroTipo").value = tipo;
+        document.getElementById("filtroCategoria").value = "";
         document.getElementById("filtroCiudad").value = "";
         document.getElementById("busquedaTexto").value = "";
         document.getElementById("filtroDormitorios").value = "";
@@ -2254,6 +2338,7 @@
         document.querySelectorAll(".filtro-rapido").forEach(b => b.classList.remove("activo"));
         btn.classList.add("activo");
         document.getElementById("filtroTipo").value = "";
+        document.getElementById("filtroCategoria").value = "";
         document.getElementById("filtroCiudad").value = "";
         document.getElementById("busquedaTexto").value = "";
         document.getElementById("filtroDormitorios").value = "";
@@ -2262,8 +2347,29 @@
         cargarPermutas();
       }
 
-      function limpiarFiltros() {
+      function filtroCategoria(categoria, btn) {
+        document.querySelectorAll(".chip-categoria").forEach(b => b.classList.remove("activo"));
+        if (btn) btn.classList.add("activo");
+        document.getElementById("filtroCategoria").value = categoria;
+        cargarPropiedades();
+      }
+
+      function toggleVerMasCategorias(btn) {
+        const extras = document.querySelectorAll(".chip-extra");
+        const estanOcultos = extras[0].classList.contains("oculto");
+        extras.forEach(e => {
+          if (estanOcultos) {
+            e.classList.remove("oculto");
+          } else {
+            e.classList.add("oculto");
+          }
+        });
+        btn.textContent = estanOcultos ? "− Ver menos" : "+ Ver más";
+      }
+
+     function limpiarFiltros() {
         document.getElementById("filtroTipo").value = "";
+        document.getElementById("filtroCategoria").value = "";
         document.getElementById("filtroCiudad").value = "";
         document.getElementById("filtroDormitorios").value = "";
         document.getElementById("filtroPrecioMin").value = "";
@@ -2281,7 +2387,8 @@
       async function cargarPropiedades() {
         const lista = document.getElementById("lista");
 
-        const tipo = document.getElementById("filtroTipo").value;
+       const tipo = document.getElementById("filtroTipo").value;
+        const categoria = document.getElementById("filtroCategoria").value;
         const ciudad = document.getElementById("filtroCiudad").value;
         const dormitorios = document.getElementById("filtroDormitorios").value;
         const precioMin = document.getElementById("filtroPrecioMin").value;
@@ -2294,8 +2401,12 @@
 
         let query = db.from("propiedades").select("*");
 
-        if (tipo) {
+       if (tipo) {
           query = query.eq("tipo", tipo);
+        }
+
+        if (categoria) {
+          query = query.eq("categoria", categoria);
         }
 
         if (ciudad) {
