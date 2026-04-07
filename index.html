@@ -364,6 +364,19 @@
         font-weight: 600;
       }
 
+      .filtro-rapido-permuta {
+        border-color: #f5c5ce !important;
+        background: #fff8fa !important;
+        color: #c11b36 !important;
+        font-weight: 500;
+      }
+
+      .filtro-rapido-permuta.activo {
+        background: #c11b36 !important;
+        border-color: #c11b36 !important;
+        color: #fff !important;
+      }
+
       .acciones-card {
         display: flex;
         flex-direction: column;
@@ -2002,6 +2015,7 @@
           <button type="button" class="filtro-rapido" onclick="filtroRapido('venta', this)">Venta</button>
           <button type="button" class="filtro-rapido" onclick="filtroRapido('alquiler', this)">Alquiler</button>
           <button type="button" class="filtro-rapido" onclick="filtroRapido('temporal', this)">Temporal</button>
+          <button type="button" class="filtro-rapido filtro-rapido-permuta" onclick="filtroRapidoPermuta(this)">🔄 Permutas</button>
         </div>
       </div>
 
@@ -2194,11 +2208,18 @@
         cargarPropiedades();
       }
 
-      function filtroRapido(tipo, btn) {
+     function filtroRapido(tipo, btn) {
         document.querySelectorAll(".filtro-rapido").forEach(b => b.classList.remove("activo"));
         btn.classList.add("activo");
         document.getElementById("filtroTipo").value = tipo;
         cargarPropiedades();
+      }
+
+      function filtroRapidoPermuta(btn) {
+        document.querySelectorAll(".filtro-rapido").forEach(b => b.classList.remove("activo"));
+        btn.classList.add("activo");
+        document.getElementById("filtroTipo").value = "";
+        cargarPermutas();
       }
 
       function limpiarFiltros() {
