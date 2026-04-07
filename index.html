@@ -1904,6 +1904,8 @@
             <option value="">Tipo operación</option>
             <option value="venta">Venta</option>
             <option value="alquiler">Alquiler</option>
+            <option value="temporal">Temporal</option>
+            <option value="emprendimiento">Emprendimientos</option>
           </select>
 
           <select id="filtroCiudad">
@@ -2015,6 +2017,7 @@
           <button type="button" class="filtro-rapido" onclick="filtroRapido('venta', this)">Venta</button>
           <button type="button" class="filtro-rapido" onclick="filtroRapido('alquiler', this)">Alquiler</button>
           <button type="button" class="filtro-rapido" onclick="filtroRapido('temporal', this)">Temporal</button>
+          <button type="button" class="filtro-rapido" onclick="filtroRapido('emprendimiento', this)">Emprendimientos</button>
           <button type="button" class="filtro-rapido filtro-rapido-permuta" onclick="filtroRapidoPermuta(this)">🔄 Permutas</button>
         </div>
       </div>
@@ -2163,11 +2166,13 @@
         if (operacion === "temporal") {
           const item = document.querySelectorAll(".mega-menu .menu-item")[2];
           if (item) item.classList.add("activo");
+          tipoValor = "temporal";
         }
 
         if (operacion === "emprendimientos") {
           const item = document.querySelectorAll(".mega-menu .menu-item")[3];
           if (item) item.classList.add("activo");
+          tipoValor = "emprendimiento";
         }
 
         document.getElementById("filtroTipo").value = tipoValor || "";
