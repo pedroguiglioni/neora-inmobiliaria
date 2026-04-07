@@ -2209,14 +2209,20 @@
       }
 
       
-      function aplicarFiltros() {
+     function aplicarFiltros() {
         cargarPropiedades();
+        document.getElementById("propiedades").scrollIntoView({ behavior: "smooth" });
       }
 
      function filtroRapido(tipo, btn) {
         document.querySelectorAll(".filtro-rapido").forEach(b => b.classList.remove("activo"));
         btn.classList.add("activo");
         document.getElementById("filtroTipo").value = tipo;
+        document.getElementById("filtroCiudad").value = "";
+        document.getElementById("busquedaTexto").value = "";
+        document.getElementById("filtroDormitorios").value = "";
+        document.getElementById("filtroPrecioMin").value = "";
+        document.getElementById("filtroPrecioMax").value = "";
         cargarPropiedades();
       }
 
@@ -2224,6 +2230,11 @@
         document.querySelectorAll(".filtro-rapido").forEach(b => b.classList.remove("activo"));
         btn.classList.add("activo");
         document.getElementById("filtroTipo").value = "";
+        document.getElementById("filtroCiudad").value = "";
+        document.getElementById("busquedaTexto").value = "";
+        document.getElementById("filtroDormitorios").value = "";
+        document.getElementById("filtroPrecioMin").value = "";
+        document.getElementById("filtroPrecioMax").value = "";
         cargarPermutas();
       }
 
