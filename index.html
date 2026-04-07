@@ -2581,6 +2581,41 @@ Consultar por WhatsApp
               }
           card.style.cursor = "pointer";
           card.onclick = () => { window.location = "/propiedad.html?id=" + p.id; };
+
+          const listaAmenities = [
+            { key: "garage", label: "Garage" },
+            { key: "piscina", label: "Piscina" },
+            { key: "quincho", label: "Quincho" },
+            { key: "jardin", label: "Jardín" },
+            { key: "terraza", label: "Terraza" },
+            { key: "balcon", label: "Balcón" },
+            { key: "seguridad_24hs", label: "Seguridad 24hs" },
+            { key: "barrio_cerrado", label: "Barrio cerrado" },
+            { key: "aire_acondicionado", label: "Aire ac." },
+            { key: "calefaccion", label: "Calefacción" },
+            { key: "amoblado", label: "Amoblado" },
+            { key: "apto_mascotas", label: "Apto mascotas" },
+            { key: "portero", label: "Portero" },
+            { key: "lavadero", label: "Lavadero" },
+            { key: "bodega", label: "Bodega" },
+            { key: "deposito", label: "Depósito" },
+            { key: "estacionamiento", label: "Estacionamiento" }
+          ];
+          const amenitiesActivas = listaAmenities.filter(a => p[a.key]);
+          const amenitiesTop = amenitiesActivas.slice(0, 3);
+          const amenitiesResto = amenitiesActivas.length - amenitiesTop.length;
+          let htmlAmenities = "";
+          if (amenitiesActivas.length > 0) {
+            htmlAmenities = '<div class="card-pro-extras" style="margin-bottom:6px;">';
+            amenitiesTop.forEach(a => {
+              htmlAmenities += '<span class="card-pro-chip">' + a.label + '</span>';
+            });
+            if (amenitiesResto > 0) {
+              htmlAmenities += '<span class="card-pro-chip" style="background:transparent;border:none;color:#888;padding-left:4px;">+' + amenitiesResto + ' más</span>';
+            }
+            htmlAmenities += '</div>';
+          }
+
           card.innerHTML = `
             <div class="card-pro">
               <div class="card-pro-media">
@@ -2599,7 +2634,8 @@ Consultar por WhatsApp
                   <a href="/propiedad.html?id=${p.id}" onclick="event.stopPropagation()">${p.titulo || "Sin título"}</a>
                 </h3>
                 <p class="card-pro-ubicacion">${p.ciudad || "Sin ciudad"}</p>
-                <p class="card-pro-meta">${p.m2 ?? 0} m² &nbsp;·&nbsp; ${p.dormitorios ?? 0} dorm. &nbsp;·&nbsp; ${p.banos ?? 0} baños</p>
+               <p class="card-pro-meta">${p.m2 ?? 0} m² &nbsp;·&nbsp; ${p.dormitorios ?? 0} dorm. &nbsp;·&nbsp; ${p.banos ?? 0} baños</p>
+                ${htmlAmenities}
                 <div class="card-pro-acciones">
                   <a class="card-pro-btn" href="/propiedad.html?id=${p.id}" onclick="event.stopPropagation()">Ver propiedad</a>
                   <a class="card-pro-btn card-pro-btn-sec card-pro-btn-wa"
