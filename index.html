@@ -1111,10 +1111,10 @@
         }
       }
 
-      .filtros-principales {
+     .filtros-principales {
         display: grid;
-        grid-template-columns: 150px 150px minmax(520px, 1fr) 130px 130px;
-        gap: 12px;
+        grid-template-columns: 140px 160px 140px minmax(280px, 1fr) 120px 120px;
+        gap: 10px;
         align-items: center;
       }
 
@@ -2103,29 +2103,20 @@
         </div>
       </div>
 
-      <div class="filtros-categoria" style="margin-bottom:16px;padding-top:14px;border-top:1px solid #f0f0f0;">
+    <div class="filtros-categoria" style="margin-bottom:16px;padding-top:14px;border-top:1px solid #f0f0f0;">
         <p style="margin:0 0 8px;font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px;font-weight:600;">Filtrar por categoría:</p>
         <div class="filtros-categoria-chips" style="display:flex;gap:6px;flex-wrap:wrap;">
           <button type="button" class="chip-categoria activo" onclick="filtroCategoria('', this)">Todas</button>
           <button type="button" class="chip-categoria" onclick="filtroCategoria('Casa', this)">Casa</button>
           <button type="button" class="chip-categoria" onclick="filtroCategoria('Departamento', this)">Departamento</button>
           <button type="button" class="chip-categoria" onclick="filtroCategoria('PH', this)">PH</button>
-          <button type="button" class="chip-categoria" onclick="filtroCategoria('Lote/Terreno', this)">Lote/Terreno</button>
+          <button type="button" class="chip-categoria" onclick="filtroCategoria('Monoambiente', this)">Monoambiente</button>
           <button type="button" class="chip-categoria" onclick="filtroCategoria('Quinta', this)">Quinta</button>
+          <button type="button" class="chip-categoria" onclick="filtroCategoria('Lote/Terreno', this)">Lote/Terreno</button>
           <button type="button" class="chip-categoria" onclick="filtroCategoria('Local', this)">Local</button>
           <button type="button" class="chip-categoria" onclick="filtroCategoria('Oficina', this)">Oficina</button>
-          <button type="button" class="chip-categoria" onclick="filtroCategoria('Cochera', this)">Cochera</button>
-          <button type="button" class="chip-categoria chip-ver-mas" onclick="toggleVerMasCategorias(this)">+ Ver más</button>
-          <button type="button" class="chip-categoria chip-extra oculto" onclick="filtroCategoria('Dúplex', this)">Dúplex</button>
-          <button type="button" class="chip-categoria chip-extra oculto" onclick="filtroCategoria('Monoambiente', this)">Monoambiente</button>
-          <button type="button" class="chip-categoria chip-extra oculto" onclick="filtroCategoria('Campo', this)">Campo</button>
-          <button type="button" class="chip-categoria chip-extra oculto" onclick="filtroCategoria('Chacra', this)">Chacra</button>
-          <button type="button" class="chip-categoria chip-extra oculto" onclick="filtroCategoria('Fracción', this)">Fracción</button>
-          <button type="button" class="chip-categoria chip-extra oculto" onclick="filtroCategoria('Consultorio', this)">Consultorio</button>
-          <button type="button" class="chip-categoria chip-extra oculto" onclick="filtroCategoria('Fondo de comercio', this)">Fondo de comercio</button>
-          <button type="button" class="chip-categoria chip-extra oculto" onclick="filtroCategoria('Galpón/Depósito', this)">Galpón/Depósito</button>
-          <button type="button" class="chip-categoria chip-extra oculto" onclick="filtroCategoria('Edificio', this)">Edificio</button>
-          <button type="button" class="chip-categoria chip-extra oculto" onclick="filtroCategoria('Cabaña', this)">Cabaña</button>
+          <button type="button" class="chip-categoria" onclick="filtroCategoria('Consultorio', this)">Consultorio</button>
+          <button type="button" class="chip-categoria" onclick="filtroCategoria('Campo', this)">Campo</button>
         </div>
       </div>
 
@@ -2354,18 +2345,7 @@
         cargarPropiedades();
       }
 
-      function toggleVerMasCategorias(btn) {
-        const extras = document.querySelectorAll(".chip-extra");
-        const estanOcultos = extras[0].classList.contains("oculto");
-        extras.forEach(e => {
-          if (estanOcultos) {
-            e.classList.remove("oculto");
-          } else {
-            e.classList.add("oculto");
-          }
-        });
-        btn.textContent = estanOcultos ? "− Ver menos" : "+ Ver más";
-      }
+      
 
      function limpiarFiltros() {
         document.getElementById("filtroTipo").value = "";
