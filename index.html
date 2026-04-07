@@ -2360,35 +2360,6 @@
                   ${p.m2 ?? 0} m² &nbsp;·&nbsp; ${p.dormitorios ?? 0} dorm. &nbsp;·&nbsp; ${p.banos ?? 0} baños
                 </p>
 
-                ${(() => {
-                  const amenities = [
-                    { key: 'garage', label: 'Garage' },
-                    { key: 'piscina', label: 'Piscina' },
-                    { key: 'quincho', label: 'Quincho' },
-                    { key: 'jardin', label: 'Jardín' },
-                    { key: 'terraza', label: 'Terraza' },
-                    { key: 'balcon', label: 'Balcón' },
-                    { key: 'seguridad_24hs', label: 'Seguridad 24hs' },
-                    { key: 'barrio_cerrado', label: 'Barrio cerrado' },
-                    { key: 'aire_acondicionado', label: 'Aire ac.' },
-                    { key: 'calefaccion', label: 'Calefacción' },
-                    { key: 'amoblado', label: 'Amoblado' },
-                    { key: 'apto_mascotas', label: 'Apto mascotas' },
-                    { key: 'portero', label: 'Portero' },
-                    { key: 'lavadero', label: 'Lavadero' },
-                    { key: 'bodega', label: 'Bodega' },
-                    { key: 'deposito', label: 'Depósito' },
-                    { key: 'estacionamiento', label: 'Estacionamiento' }
-                  ].filter(a => p[a.key]);
-                  const top = amenities.slice(0, 3);
-                  const resto = amenities.length - top.length;
-                  if (amenities.length === 0) return '';
-                  return `<div class="card-pro-extras" style="margin-bottom:6px;">
-                    ${top.map(a => `<span class="card-pro-chip">${a.label}</span>`).join('')}
-                    ${resto > 0 ? `<span class="card-pro-chip" style="background:transparent;border:none;color:#888;padding-left:4px;">+${resto} más</span>` : ''}
-                  </div>`;
-                })()}
-
                 <div class="card-pro-extras">
                   ${p.financia ? `<span class="card-pro-chip">Financiación</span>` : ""}
                   ${p.apto_credito ? `<span class="card-pro-chip">Apto crédito</span>` : ""}
