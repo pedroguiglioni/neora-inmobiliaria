@@ -1067,6 +1067,8 @@
 
       const contenido = document.getElementById("contenido");
 
+      if (id) incrementarVisitas(id);
+
       let imagenesActuales = [];
       let indiceActual = 0;
 
@@ -1115,6 +1117,23 @@
       visorOverlay.addEventListener("click", (e) => {
         if (e.target === visorOverlay) cerrarVisor();
       });
+
+     async function incrementarVisitas(id) {
+        try {
+          const { data: actual } = await db
+            .from("propiedades")
+            .select("visitas")
+            .eq("id", id)
+            .single();
+          const nuevasVisitas = (actual?.visitas || 0) + 1;
+          await db
+            .from("propiedades")
+            .update({ visitas: nuevasVisitas })
+            .eq("id", id);
+        } catch (e) {
+          console.log("Error incrementando visitas:", e);
+        }
+      }
 
       async function cargarPropiedad() {
         if (!id) {
@@ -1171,12 +1190,12 @@
                           : ""
                       }
                     </div>
-               <div class="galeria-grid-derecha">
+              <div class="galeria-grid-derecha">
                   ${imagenes
                     .slice(1, 5)
                     .map(
                       (img, i) => `
-                    <img src="${img}" data-index="${i + 1}" onclick="window.actualizarImagen(${i + 1})" />
+                    <img src="${img}" data-index="${i + 1}" onclick="window.actualizarImagen(${i + 1})" loading="lazy" decoding="async" />
                   `,
                     )
                     .join("")}
@@ -1186,7 +1205,7 @@
                   imagenes.length > 1
                     ? `
                     <div id="miniaturas-strip" style="display:${window.innerWidth <= 700 ? "flex" : "none"};gap:8px;overflow-x:auto;scrollbar-width:none;padding:10px 16px;background:#fff;border-bottom:1px solid #eee;">
-                      ${imagenes
+                     ${imagenes
                         .map(
                           (img, i) => `
                         <img
@@ -1194,6 +1213,8 @@
                           data-index="${i}"
                           id="mini-${i}"
                           onclick="window.actualizarImagen(${i})"
+                          loading="lazy"
+                          decoding="async"
                           style="width:72px;height:54px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid ${i === 0 ? "#c11b36" : "transparent"};flex-shrink:0;opacity:${i === 0 ? "1" : "0.75"};"
                         />
                       `,
@@ -1221,8 +1242,14 @@
           </div>
 
                          <div class="detalle-layout">
-                    <div class="detalle-izquierda">
+                  <div class="detalle-izquierda">
                     <div class="ubicacion">${propiedad.ciudad || "Sin ciudad"}</div>
+                    <div style="display:flex;gap:20px;padding:10px 0;margin-top:8px;border-top:0.5px solid #f0f0f0;font-size:12px;color:#888;">
+                      <span style="display:inline-flex;align-items:center;gap:5px;">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        ${propiedad.visitas || 0} ${(propiedad.visitas || 0) === 1 ? "visualización" : "visualizaciones"}
+                      </span>
+                    </div>
 
                     <h3 style="margin:0 0 12px;font-size:14px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:1px;">Características</h3>
 <div class="grilla-caracteristicas" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:24px;">
@@ -1503,7 +1530,7 @@
           .map(
             (p) => `
                   <div class="similar-card" style="cursor:pointer;" onclick="window.location='/propiedad.html?id=${p.id}'">
-                    <img src="${p.imagen || "https://via.placeholder.com/600x400?text=Sin+imagen"}" alt="${p.titulo || "Propiedad"}" />
+                    <img src="${p.imagen || "https://via.placeholder.com/600x400?text=Sin+imagen"}" alt="${p.titulo || "Propiedad"}" loading="lazy" decoding="async" />
                    <div class="similar-card-contenido">
                         <p style="margin:0 0 4px;font-size:13px;color:#888;font-weight:500;">${(p.tipo || "venta").charAt(0).toUpperCase() + (p.tipo || "venta").slice(1)}</p>
                         <div class="similar-precio">
