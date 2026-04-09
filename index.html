@@ -2846,9 +2846,8 @@ Consultar por WhatsApp
        const desde = paginaActual * PROPIEDADES_POR_PAGINA;
         const hasta = desde + PROPIEDADES_POR_PAGINA - 1;
 
-        const { data, error } = await db
+      const { data, error, count } = await db
           .from("propiedades")
-          .select("*")
           .eq("permuta", true)
           .order("destacado", { ascending: false })
           .order("id", { ascending: false })
@@ -2872,8 +2871,8 @@ Consultar por WhatsApp
 
         if (esCargaInicial) {
           const contador = document.getElementById("contador-propiedades");
-          if (contador) {
-            contador.textContent = `Mostrando propiedades en permuta`;
+        if (contador) {
+            contador.textContent = `${count} ${count === 1 ? "permuta disponible" : "permutas disponibles"}`;
           }
         }
 
