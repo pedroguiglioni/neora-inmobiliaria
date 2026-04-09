@@ -2239,6 +2239,11 @@
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jZ3RyZHpva2tlZWtqYXlicnpnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxMDY0NDYsImV4cCI6MjA4ODY4MjQ0Nn0.yhxGPR_5jBTfIjp5spa_Js8HMulfMwOIeyxbO2Q_JIQ";
       const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+      const PROPIEDADES_POR_PAGINA = 20;
+      let paginaActual = 0;
+      let totalPropiedades = 0;
+      let modoActual = "propiedades";
+
       const SUBCATEGORIAS = {
         comprar: [
           "Casas",
@@ -2409,26 +2414,34 @@
 
 
       
-      async function cargarPropiedades() {
+      async function cargarPropiedades(esCargaInicial = true) {
         const lista = document.getElementById("lista");
 
-        let skeletonHtml = "";
-        for (let i = 0; i < 8; i++) {
-          skeletonHtml += `
-            <div class="skeleton-card">
-              <div class="skeleton skeleton-img"></div>
-              <div class="skeleton-body">
-                <div class="skeleton skeleton-line skeleton-line-short"></div>
-                <div class="skeleton skeleton-line skeleton-line-precio"></div>
-                <div class="skeleton skeleton-line skeleton-line-long"></div>
-                <div class="skeleton skeleton-line skeleton-line-medium"></div>
-                <div class="skeleton skeleton-line skeleton-line-full"></div>
-                <div class="skeleton skeleton-btn"></div>
+        if (esCargaInicial) {
+          paginaActual = 0;
+          modoActual = "propiedades";
+
+          let skeletonHtml = "";
+          for (let i = 0; i < 8; i++) {
+            skeletonHtml += `
+              <div class="skeleton-card">
+                <div class="skeleton skeleton-img"></div>
+                <div class="skeleton-body">
+                  <div class="skeleton skeleton-line skeleton-line-short"></div>
+                  <div class="skeleton skeleton-line skeleton-line-precio"></div>
+                  <div class="skeleton skeleton-line skeleton-line-long"></div>
+                  <div class="skeleton skeleton-line skeleton-line-medium"></div>
+                  <div class="skeleton skeleton-line skeleton-line-full"></div>
+                  <div class="skeleton skeleton-btn"></div>
+                </div>
               </div>
-            </div>
-          `;
+            `;
+          }
+          lista.innerHTML = skeletonHtml;
+
+          const wrapperViejo = document.getElementById("cargar-mas-wrapper");
+          if (wrapperViejo) wrapperViejo.remove();
         }
-        lista.innerHTML = skeletonHtml;
 
         const tipo = document.getElementById("filtroTipo").value;
         const categoria = document.getElementById("filtroCategoria").value;
@@ -2496,7 +2509,11 @@
             .order("id", { ascending: false });
         }
 
-        const { data, error } = await query;
+        const desde = paginaActual * PROPIEDADES_POR_PAGINA;
+        const hasta = desde + PROPIEDADES_POR_PAGINA - 1;
+        query = query.range(desde, hasta);
+
+        const { data, error, count } = await query;
 
         if (error) {
           lista.innerHTML = `
@@ -2507,7 +2524,7 @@
           return;
         }
 
-        if (!data || data.length === 0) {
+       if ((!data || data.length === 0) && esCargaInicial) {
           lista.innerHTML = `
             <div class="mensaje">
               No se encontraron propiedades con esos filtros.
@@ -2516,13 +2533,16 @@
           return;
         }
 
-        lista.innerHTML = "";
+        if (esCargaInicial) {
+          lista.innerHTML = "";
+        }
 
-        lista.innerHTML = "";
+        const wrapperViejo = document.getElementById("cargar-mas-wrapper");
+        if (wrapperViejo) wrapperViejo.remove();
 
         const contador = document.getElementById("contador-propiedades");
-        if (contador) {
-          contador.textContent = `${data.length} ${data.length === 1 ? "propiedad encontrada" : "propiedades encontradas"}`;
+        if (contador && esCargaInicial) {
+          contador.textContent = `Mostrando propiedades disponibles`;
         }
 
         data.forEach((p) => {
@@ -2665,8 +2685,35 @@ Consultar por WhatsApp
 
           
 
-          lista.appendChild(card);
+       lista.appendChild(card);
         });
+
+        if (data && data.length === PROPIEDADES_POR_PAGINA) {
+          const wrapper = document.createElement("div");
+          wrapper.id = "cargar-mas-wrapper";
+          wrapper.style.cssText = "display:flex;justify-content:center;margin:32px 0;grid-column:1/-1;";
+          wrapper.innerHTML = `
+            <button onclick="cargarMasPropiedades()" id="btn-cargar-mas" style="display:inline-flex;align-items:center;gap:10px;padding:14px 32px;border:1.5px solid #c11b36;border-radius:10px;background:#fff;color:#c11b36;cursor:pointer;font-size:14px;font-weight:500;transition:all 0.2s;" onmouseover="this.style.background='#c11b36';this.style.color='#fff';" onmouseout="this.style.background='#fff';this.style.color='#c11b36';">
+              Cargar más propiedades
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+            </button>
+          `;
+          lista.parentNode.insertBefore(wrapper, lista.nextSibling);
+        }
+      }
+
+      async function cargarMasPropiedades() {
+        const btn = document.getElementById("btn-cargar-mas");
+        if (btn) {
+          btn.innerHTML = "Cargando...";
+          btn.disabled = true;
+        }
+        paginaActual++;
+        if (modoActual === "propiedades") {
+          await cargarPropiedades(false);
+        } else {
+          await cargarPermutas(false);
+        }
       }
 
       async function cargarDestacadas() {
@@ -2767,45 +2814,68 @@ Consultar por WhatsApp
         cargarPermutas();
       }
 
-      async function cargarPermutas() {
+     async function cargarPermutas(esCargaInicial = true) {
         const lista = document.getElementById("lista");
 
-        let skeletonHtml = "";
-        for (let i = 0; i < 8; i++) {
-          skeletonHtml += `
-            <div class="skeleton-card">
-              <div class="skeleton skeleton-img"></div>
-              <div class="skeleton-body">
-                <div class="skeleton skeleton-line skeleton-line-short"></div>
-                <div class="skeleton skeleton-line skeleton-line-precio"></div>
-                <div class="skeleton skeleton-line skeleton-line-long"></div>
-                <div class="skeleton skeleton-line skeleton-line-medium"></div>
-                <div class="skeleton skeleton-line skeleton-line-full"></div>
-                <div class="skeleton skeleton-btn"></div>
+        if (esCargaInicial) {
+          paginaActual = 0;
+          modoActual = "permutas";
+
+          let skeletonHtml = "";
+          for (let i = 0; i < 8; i++) {
+            skeletonHtml += `
+              <div class="skeleton-card">
+                <div class="skeleton skeleton-img"></div>
+                <div class="skeleton-body">
+                  <div class="skeleton skeleton-line skeleton-line-short"></div>
+                  <div class="skeleton skeleton-line skeleton-line-precio"></div>
+                  <div class="skeleton skeleton-line skeleton-line-long"></div>
+                  <div class="skeleton skeleton-line skeleton-line-medium"></div>
+                  <div class="skeleton skeleton-line skeleton-line-full"></div>
+                  <div class="skeleton skeleton-btn"></div>
+                </div>
               </div>
-            </div>
-          `;
+            `;
+          }
+          lista.innerHTML = skeletonHtml;
+
+          const wrapperViejo = document.getElementById("cargar-mas-wrapper");
+          if (wrapperViejo) wrapperViejo.remove();
         }
-        lista.innerHTML = skeletonHtml;
+
+       const desde = paginaActual * PROPIEDADES_POR_PAGINA;
+        const hasta = desde + PROPIEDADES_POR_PAGINA - 1;
 
         const { data, error } = await db
           .from("propiedades")
           .select("*")
           .eq("permuta", true)
           .order("destacado", { ascending: false })
-          .order("id", { ascending: false });
+          .order("id", { ascending: false })
+          .range(desde, hasta);
+       if (error) {
+          lista.innerHTML = "<div class='mensaje'>Error al cargar permutas: " + error.message + "</div>";
+          return;
+        }
 
-        if (error || !data || data.length === 0) {
+        if ((!data || data.length === 0) && esCargaInicial) {
           lista.innerHTML = "<div class='mensaje'>No hay propiedades en permuta disponibles.</div>";
           return;
         }
 
-            lista.innerHTML = "";
+        if (esCargaInicial) {
+          lista.innerHTML = "";
+        }
 
-            const contador = document.getElementById("contador-propiedades");
-            if (contador) {
-              contador.textContent = `${data.length} ${data.length === 1 ? "propiedad encontrada" : "propiedades encontradas"}`;
-            }
+       const wrapperViejoP = document.getElementById("cargar-mas-wrapper");
+        if (wrapperViejoP) wrapperViejoP.remove();
+
+        if (esCargaInicial) {
+          const contador = document.getElementById("contador-propiedades");
+          if (contador) {
+            contador.textContent = `Mostrando propiedades en permuta`;
+          }
+        }
 
             data.forEach((p) => {
           const card = document.createElement("div");
@@ -2882,8 +2952,21 @@ Consultar por WhatsApp
               </div>
             </div>
           `;
-          lista.appendChild(card);
+       lista.appendChild(card);
         });
+
+        if (data && data.length === PROPIEDADES_POR_PAGINA) {
+          const wrapper = document.createElement("div");
+          wrapper.id = "cargar-mas-wrapper";
+          wrapper.style.cssText = "display:flex;justify-content:center;margin:32px 0;grid-column:1/-1;";
+          wrapper.innerHTML = `
+            <button onclick="cargarMasPropiedades()" id="btn-cargar-mas" style="display:inline-flex;align-items:center;gap:10px;padding:14px 32px;border:1.5px solid #c11b36;border-radius:10px;background:#fff;color:#c11b36;cursor:pointer;font-size:14px;font-weight:500;transition:all 0.2s;" onmouseover="this.style.background='#c11b36';this.style.color='#fff';" onmouseout="this.style.background='#fff';this.style.color='#c11b36';">
+              Cargar más permutas
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+            </button>
+          `;
+          lista.parentNode.insertBefore(wrapper, lista.nextSibling);
+        }
       }
 
       renderSubcategorias("comprar");
