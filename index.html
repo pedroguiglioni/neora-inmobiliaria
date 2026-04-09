@@ -2455,7 +2455,7 @@
           .getElementById("busquedaTexto")
           .value.trim();
 
-        let query = db.from("propiedades").select("*");
+       let query = db.from("propiedades").select("*", { count: "exact" });
 
        if (tipo) {
           query = query.eq("tipo", tipo);
@@ -2541,8 +2541,8 @@
         if (wrapperViejo) wrapperViejo.remove();
 
         const contador = document.getElementById("contador-propiedades");
-        if (contador && esCargaInicial) {
-          contador.textContent = `Mostrando propiedades disponibles`;
+       if (contador && esCargaInicial) {
+          contador.textContent = `${count} ${count === 1 ? "propiedad disponible" : "propiedades disponibles"}`;
         }
 
         data.forEach((p) => {
