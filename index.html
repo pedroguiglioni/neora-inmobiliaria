@@ -2848,6 +2848,7 @@ Consultar por WhatsApp
 
       const { data, error, count } = await db
           .from("propiedades")
+          .select("*", { count: "exact" })
           .eq("permuta", true)
           .order("destacado", { ascending: false })
           .order("id", { ascending: false })
