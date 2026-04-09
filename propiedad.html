@@ -1191,11 +1191,11 @@
                       }
                     </div>
               <div class="galeria-grid-derecha">
-                  ${imagenes
+                 ${imagenes
                     .slice(1, 5)
                     .map(
                       (img, i) => `
-                    <img src="${img}" data-index="${i + 1}" onclick="window.actualizarImagen(${i + 1})" loading="lazy" decoding="async" />
+                    <img src="${img}" data-index="${i + 1}" onclick="window.actualizarImagen(${i + 1})" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;" />
                   `,
                     )
                     .join("")}
