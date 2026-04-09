@@ -1195,7 +1195,7 @@
                     .slice(1, 5)
                     .map(
                       (img, i) => `
-                    <img src="${img}" data-index="${i + 1}" onclick="window.actualizarImagen(${i + 1})" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:contain;display:block;background:#111;" />
+                    <img src="${img}" data-index="${i + 1}" onclick="window.actualizarImagen(${i + 1})" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;background:#111;" />
                   `
                     )
                     .join("")}
