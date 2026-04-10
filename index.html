@@ -2611,7 +2611,7 @@
          if (amenitiesResto > 0) {
               const idModal = 'amen-' + p.id;
               window['__amen_' + p.id] = amenitiesActivas;
-              htmlAmenities += '<button type="button" class="card-pro-chip" onclick="event.stopPropagation();event.preventDefault();abrirPopupAmenities(event,\'' + todosLabels + '\')" class="btn-mas-amenities" style="background:transparent;border:none;color:#c11b36;padding:4px 6px;font-weight:500;cursor:pointer;text-decoration:underline;font-size:12px;">+' + amenitiesResto + ' más</button>';
+             htmlAmenities += '<button type="button" class="card-pro-chip btn-mas-amenities" onclick="event.stopPropagation();event.preventDefault();abrirPopupAmenities(event,\'' + todosLabels + '\')" style="background:transparent;border:none;color:#c11b36;padding:4px 6px;font-weight:500;cursor:pointer;text-decoration:underline;font-size:12px;">+' + amenitiesResto + ' más</button>';
             }
             htmlAmenities += '</div>';
           }
