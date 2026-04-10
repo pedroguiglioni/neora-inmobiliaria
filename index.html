@@ -2917,7 +2917,7 @@ Consultar por WhatsApp
             if (amenitiesResto > 0) {
               const todosIds = amenitiesActivas.map(a => a.key).join(',');
               const todosLabels = amenitiesActivas.map(a => a.label).join('||');
-              htmlAmenities += '<span class="card-pro-chip" style="background:transparent;border:none;color:#c11b36;padding-left:4px;font-weight:500;cursor:pointer;" onclick="event.stopPropagation();abrirPopupAmenities(this,\'' + todosLabels + '\')"">+' + amenitiesResto + ' más</span>';
+              htmlAmenities += '<span class="card-pro-chip" style="background:transparent;border:none;color:#c11b36;padding-left:4px;font-weight:500;cursor:pointer;" onclick="event.stopPropagation();event.preventDefault();abrirPopupAmenities(event,\'' + todosLabels + '\')"">+' + amenitiesResto + ' más</span>';
             }
             htmlAmenities += '</div>';
           }
@@ -2990,7 +2990,9 @@ Consultar por WhatsApp
 </div>
 
 <script>
-function abrirPopupAmenities(el, labelsStr) {
+function abrirPopupAmenities(e, labelsStr) {
+  e.stopPropagation();
+  e.preventDefault();
   const labels = labelsStr.split('||');
   const lista = document.getElementById('popup-amenities-lista');
   lista.innerHTML = labels.map(l => '<div style="padding:8px 10px;border:1px solid #ececec;border-radius:8px;font-size:13px;color:#111;">' + l + '</div>').join('');
