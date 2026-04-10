@@ -2574,7 +2574,8 @@
             card.style.border = "1px solid #e8e8e8";
           }
           card.style.cursor = "pointer";
-          card.onclick = () => {
+          card.onclick = (e) => {
+            if (e.target.closest('.btn-mas-amenities')) return;
             window.location = "/propiedad.html?id=" + p.id;
           };
           console.log("imagen:", p.imagen);
@@ -2610,7 +2611,7 @@
          if (amenitiesResto > 0) {
               const idModal = 'amen-' + p.id;
               window['__amen_' + p.id] = amenitiesActivas;
-              htmlAmenities += '<button type="button" class="card-pro-chip" onclick="event.stopPropagation();event.preventDefault();mostrarAmenitiesDe(' + p.id + ')" style="background:transparent;border:none;color:#c11b36;padding:4px 6px;font-weight:500;cursor:pointer;text-decoration:underline;font-size:12px;">+' + amenitiesResto + ' más</button>';
+              htmlAmenities += '<button type="button" class="card-pro-chip" onclick="event.stopPropagation();event.preventDefault();abrirPopupAmenities(event,\'' + todosLabels + '\')" class="btn-mas-amenities" style="background:transparent;border:none;color:#c11b36;padding:4px 6px;font-weight:500;cursor:pointer;text-decoration:underline;font-size:12px;">+' + amenitiesResto + ' más</button>';
             }
             htmlAmenities += '</div>';
           }
@@ -2773,7 +2774,10 @@ Consultar por WhatsApp
                 const w = isMobile ? window.innerWidth - 80 : (contenedor.offsetWidth - 80 - 40) / 3;
                 const card = document.createElement("div");
                 card.style.cssText = `width:${w}px;min-width:${w}px;scroll-snap-align:start;background:#fff;border-radius:16px;overflow:hidden;border:1px solid #e8e8e8;flex-shrink:0;cursor:pointer;`;
-              card.onclick = () => { window.location = "/propiedad.html?id=" + p.id; };
+              card.onclick = (e) => {
+            if (e.target.closest('.btn-mas-amenities')) return;
+            window.location = "/propiedad.html?id=" + p.id;
+          };
               card.innerHTML = `
                <div style="position:relative;">
                   <img src="${p.imagen || 'https://via.placeholder.com/600x400?text=Sin+imagen'}" loading="lazy" decoding="async" style="width:100%;height:180px;object-fit:cover;display:block;" />
