@@ -2414,6 +2414,14 @@
 
 
       
+     function mostrarAmenities(html) {
+        const modal = document.createElement('div');
+        modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;';
+        modal.onclick = (e) => { if(e.target === modal) modal.remove(); };
+        modal.innerHTML = '<div style="background:#fff;border-radius:14px;padding:24px;max-width:500px;width:100%;max-height:80vh;overflow-y:auto;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;"><h3 style="margin:0;font-size:18px;font-weight:500;color:#111;">Características</h3><button onclick="this.closest(\'div[style*=fixed]\').remove()" style="background:none;border:none;font-size:24px;cursor:pointer;color:#888;">&times;</button></div><div style="display:flex;flex-wrap:wrap;">' + html + '</div></div>';
+        document.body.appendChild(modal);
+      }
+
       async function cargarPropiedades(esCargaInicial = true) {
         const lista = document.getElementById("lista");
 
@@ -2585,8 +2593,9 @@
             amenitiesTop.forEach(a => {
               htmlAmenities += '<span class="card-pro-chip" style="display:inline-flex;align-items:center;gap:4px;background:transparent;border:none;padding:4px 6px;">' + a.icon + a.label + '</span>';
             });
-            if (amenitiesResto > 0) {
-              htmlAmenities += '<span class="card-pro-chip" style="background:transparent;border:none;color:#c11b36;padding-left:4px;font-weight:500;">+' + amenitiesResto + ' más</span>';
+          if (amenitiesResto > 0) {
+              const todasHtml = amenitiesActivas.map(a => '<span style=\"display:inline-flex;align-items:center;gap:5px;font-size:12px;color:#333;padding:6px 10px;background:#f6f6f6;border-radius:6px;margin:3px;\">' + a.icon + a.label + '</span>').join('');
+              htmlAmenities += '<span class="card-pro-chip" onclick="event.stopPropagation();event.preventDefault();mostrarAmenities(`' + todasHtml.replace(/`/g,"") + '`)" style="background:transparent;border:none;color:#c11b36;padding-left:4px;font-weight:500;cursor:pointer;text-decoration:underline;">+' + amenitiesResto + ' más</span>';
             }
             htmlAmenities += '</div>';
           }
