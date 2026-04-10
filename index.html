@@ -2414,7 +2414,21 @@
 
 
       
-     function mostrarAmenities(html) {
+    function mostrarAmenitiesDe(id) {
+        const arr = window['__amen_' + id] || [];
+        const html = arr.map(a => '<span style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:#333;padding:8px 12px;background:#f6f6f6;border-radius:8px;margin:4px;">' + a.icon + a.label + '</span>').join('');
+        const modal = document.createElement('div');
+        modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;';
+        modal.onclick = (e) => { if(e.target === modal) modal.remove(); };
+        const inner = document.createElement('div');
+        inner.style.cssText = 'background:#fff;border-radius:14px;padding:24px;max-width:500px;width:100%;max-height:80vh;overflow-y:auto;';
+        inner.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;"><h3 style="margin:0;font-size:18px;font-weight:500;color:#111;">Características</h3><button type="button" style="background:none;border:none;font-size:28px;cursor:pointer;color:#888;line-height:1;">&times;</button></div><div style="display:flex;flex-wrap:wrap;">' + html + '</div>';
+        inner.querySelector('button').onclick = () => modal.remove();
+        modal.appendChild(inner);
+        document.body.appendChild(modal);
+      }
+
+      function mostrarAmenities(html) {
         const modal = document.createElement('div');
         modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;';
         modal.onclick = (e) => { if(e.target === modal) modal.remove(); };
@@ -2593,9 +2607,10 @@
             amenitiesTop.forEach(a => {
               htmlAmenities += '<span class="card-pro-chip" style="display:inline-flex;align-items:center;gap:4px;background:transparent;border:none;padding:4px 6px;">' + a.icon + a.label + '</span>';
             });
-          if (amenitiesResto > 0) {
-              const todasHtml = amenitiesActivas.map(a => '<span style=\"display:inline-flex;align-items:center;gap:5px;font-size:12px;color:#333;padding:6px 10px;background:#f6f6f6;border-radius:6px;margin:3px;\">' + a.icon + a.label + '</span>').join('');
-              htmlAmenities += '<span class="card-pro-chip" onclick="event.stopPropagation();event.preventDefault();mostrarAmenities(`' + todasHtml.replace(/`/g,"") + '`)" style="background:transparent;border:none;color:#c11b36;padding-left:4px;font-weight:500;cursor:pointer;text-decoration:underline;">+' + amenitiesResto + ' más</span>';
+         if (amenitiesResto > 0) {
+              const idModal = 'amen-' + p.id;
+              window['__amen_' + p.id] = amenitiesActivas;
+              htmlAmenities += '<button type="button" class="card-pro-chip" onclick="event.stopPropagation();event.preventDefault();mostrarAmenitiesDe(' + p.id + ')" style="background:transparent;border:none;color:#c11b36;padding:4px 6px;font-weight:500;cursor:pointer;text-decoration:underline;font-size:12px;">+' + amenitiesResto + ' más</button>';
             }
             htmlAmenities += '</div>';
           }
@@ -2924,9 +2939,9 @@ Consultar por WhatsApp
               htmlAmenities += '<span class="card-pro-chip" style="display:inline-flex;align-items:center;gap:4px;background:transparent;border:none;padding:4px 6px;">' + a.icon + a.label + '</span>';
             });
             if (amenitiesResto > 0) {
-              const todosIds = amenitiesActivas.map(a => a.key).join(',');
-              const todosLabels = amenitiesActivas.map(a => a.label).join('||');
-              htmlAmenities += '<span class="card-pro-chip" style="background:transparent;border:none;color:#c11b36;padding-left:4px;font-weight:500;cursor:pointer;" onclick="event.stopPropagation();event.preventDefault();abrirPopupAmenities(event,\'' + todosLabels + '\')"">+' + amenitiesResto + ' más</span>';
+              const idModal = 'amen-' + p.id;
+              window['__amen_' + p.id] = amenitiesActivas;
+              htmlAmenities += '<button type="button" class="card-pro-chip" onclick="event.stopPropagation();event.preventDefault();mostrarAmenitiesDe(' + p.id + ')" style="background:transparent;border:none;color:#c11b36;padding:4px 6px;font-weight:500;cursor:pointer;text-decoration:underline;font-size:12px;">+' + amenitiesResto + ' más</button>';
             }
             htmlAmenities += '</div>';
           }
